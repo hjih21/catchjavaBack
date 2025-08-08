@@ -1,5 +1,0 @@
-package com.smhrd.web.mapper;
-
-public interface PositionMapper {
-
-}

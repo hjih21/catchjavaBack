@@ -1,5 +1,0 @@
-package com.smhrd.web.user.mapper;
-
-public interface Member {
-
-}
