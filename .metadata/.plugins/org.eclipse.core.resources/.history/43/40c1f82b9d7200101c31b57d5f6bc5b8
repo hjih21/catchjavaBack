@@ -1,0 +1,47 @@
+// assets/js/join.js
+
+// DOM 이 완전히 로드된 후 실행
+$(document).ready(function() {
+
+  // email 입력란을 벗어날 때(blur) 중복 검사
+  $('#email').on('blur', function() {
+    const email = $(this).val().trim();
+
+    // 빈 값인 경우엔 검사하지 않고 메시지 표시
+    if (!email) {
+      $('#result')
+        .text('이메일을 입력해주세요.')
+        .css('color', 'orange');
+      return;
+    }
+
+    // AJAX 호출
+    $.ajax({
+      url: '/web/checkEmail',      // SpringRestController 의 매핑 경로
+      type: 'get',
+      data: { inputEmail: email }, // 쿼리 파라미터 이름(inputEmail)과 값
+      success: function(res) {
+        if (res === 'true') {
+          $('#result')
+            .text('사용 가능한 이메일입니다.')
+            .css('color', 'green');
+        } else {
+          $('#result')
+            .text('이미 사용 중인 이메일입니다.')
+            .css('color', 'red');
+        }
+      },
+      error: function() {
+        $('#result')
+          .text('서버와 통신 중 오류가 발생했습니다.')
+          .css('color', 'red');
+      }
+    });
+  });
+
+  // (선택) ‘중복확인’ 버튼 클릭 시에도 검사
+  $('.duplicate-check-btn').on('click', function() {
+    $('#email').blur();
+  });
+
+});

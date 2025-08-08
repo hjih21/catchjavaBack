@@ -1,0 +1,97 @@
+package com.smhrd.web.controller;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.smhrd.web.entity.MsgMember;
+import com.smhrd.web.entity.Position;
+import com.smhrd.web.mapper.MsgMemberMapper;
+import com.smhrd.web.mapper.PositionMapper;
+
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+public class UserController {
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+	
+	@Autowired
+	private MsgMemberMapper mapper;
+	
+	@Autowired
+	private PositionMapper pmapper;
+	
+	@PostMapping("/joinMember")
+	public String joinMember(MsgMember mem, Model model) {
+		
+		mapper.join(mem);
+		model.addAttribute("email", mem.getUser_id());
+		
+		return "login";
+	}
+	
+	@PostMapping("/loginMember")
+	public String loginMember(MsgMember mem, HttpSession session, Model model) {
+		MsgMember member = mapper.login(mem);
+		logger.info("로그인 된 회원의 정보 >> ", member);
+		session.setAttribute("member", member);
+		if (member != null) {
+			  session.setAttribute("member", member);
+			  return "redirect:/main";
+			} else {
+			  model.addAttribute("errorMsg", "로그인 실패");
+			  return "login";
+			}
+	}
+	
+	 @GetMapping("/main")
+	    public String mainPage() {
+	        return "main"; 
+	    }
+	
+	@GetMapping("/test3")
+	public String test3() {
+		return "gameProfileTest";
+	}
+	 
+	 
+	 
+	 
+	@PostMapping("/savePosition")
+    public String savePosition(Position position, HttpSession session, @RequestParam("available_days")List<String> availableDays) {
+    	// 세션에서 로그인 멤버 꺼내기
+    	MsgMember login = (MsgMember) session.getAttribute("member");
+    	if (login == null) {
+    		return "login";
+    	}
+    	
+    	// user_id 필드에 세션의 user_id 설정
+    	position.setUser_id(login.getUser_id());
+    	
+    	// List -> CSV 변환
+    	if (availableDays != null && !availableDays.isEmpty()) {
+    		position.setAvailable_days(String.join(",", availableDays));
+    	}else {
+    		position.setAvailable_days("");
+    	}
+    	
+    	
+    	// DB 저장
+    	int result = pmapper.insertPosition(position);
+
+    	
+    	return "redirect:/main";
+	}
+	
+}
+
+
+

@@ -1,0 +1,22 @@
+package com.smhrd.web.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.smhrd.web.entity.MsgMember;
+import com.smhrd.web.mapper.MsgMemberMapper;
+
+@RestController
+public class UserRestContoller {
+
+    @Autowired
+    private MsgMemberMapper mapper;
+
+    @GetMapping("/checkEmail")
+    public String checkEmail(@RequestParam("email") String email) {
+        MsgMember user = mapper.selectByEmail(email);
+        return (user == null) ? "true" : "false";
+    }
+}

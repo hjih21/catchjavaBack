@@ -1,0 +1,8 @@
+package com.smhrd.web.user;
+
+import org.springframework.stereotype.Controller;
+
+@MyController
+public class Controller {
+
+}

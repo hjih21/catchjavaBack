@@ -1,0 +1,12 @@
+package com.smhrd.web.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.smhrd.web.entity.Position;
+
+@Mapper
+public interface PositionMapper {
+	
+	
+	int insertPosition(Position position);
+}

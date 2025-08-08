@@ -1,0 +1,6 @@
+package com.smhrd.web.user;
+
+@Controller
+public class Controller {
+
+}

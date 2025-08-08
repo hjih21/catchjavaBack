@@ -1,0 +1,43 @@
+package com.smhrd.web.entity;
+
+import java.time.LocalTime;
+import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Position {
+    // DB 컬럼: user_id
+    private String userId;
+
+    // DB 컬럼: user_position1
+    private int userPosition1;
+
+    // DB 컬럼: user_position2
+    private Integer userPosition2;
+
+    // DB 컬럼: user_game_nick
+    private String userGameNick;
+
+    // DB 컬럼: user_special_note
+    private String userSpecialNote;
+
+    // 폼 바인딩용 (여러 개 선택)
+    private List<String> availableDays;
+
+    // DB 저장용 (콤마로 연결한 문자열) → DB 컬럼: available_days
+    private String availableDaysCsv;
+
+    // DB 컬럼: available_start
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime availableStart;
+
+    // DB 컬럼: available_end
+    @DateTimeFormat(pattern = "HH:mm")
+    private LocalTime availableEnd;
+}

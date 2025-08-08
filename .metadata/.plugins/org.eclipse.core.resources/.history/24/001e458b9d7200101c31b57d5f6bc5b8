@@ -1,0 +1,33 @@
+<!-- jQuery 로드된 이후, 페이지 하단에 넣으세요. -->
+<script type="text/javascript">
+  function checkEmail(){
+    // 1) 입력값 찍어보기
+    let email = $('#email').val().trim();
+    console.log('[checkEmail] 요청 보낼 email:', email);
+
+    $.ajax({
+      url: '/web/checkEmail',
+      type: 'get',
+      data: { inputEmail: email },
+      success: function(res){
+        // 2) 응답값 찍어보기
+        console.log('[checkEmail] AJAX 성공, 서버 응답:', res);
+
+        if(res === "true"){
+          $("#result")
+            .text("사용 가능한 이메일 입니다.")
+            .css("color", "green");
+        } else {
+          $("#result")
+            .text("이미 사용중인 이메일 입니다.")
+            .css("color", "red");
+        }
+      },
+      error: function(xhr, status, error){
+        // 3) 에러 찍어보기
+        console.error('[checkEmail] AJAX 에러', status, error);
+        alert("회원 체크 실패");
+      }
+    });
+  }
+</script>

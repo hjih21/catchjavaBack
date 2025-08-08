@@ -1,0 +1,41 @@
+package com.smhrd.web.controller;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.smhrd.web.entity.MsgMember;
+import com.smhrd.web.entity.MsgMessage;
+import com.smhrd.web.mapper.MsgMemberMapper;
+import com.smhrd.web.mapper.MsgMessageMapper;
+
+import jakarta.servlet.http.HttpSession;
+
+@Controller
+public class UserController {
+
+	  // ① 기존 Mapper 대신 JdbcTemplate 주입
+	  @Autowired
+	  private JdbcTemplate jdbc;
+
+	  // /web/checkEmail 로 매핑
+	  @GetMapping("/checkEmail")
+	  public String checkEmail(@RequestParam("inputEmail") String email) {
+	    // ② 직접 COUNT 쿼리 실행
+	    Integer cnt = jdbc.queryForObject(
+	      "SELECT COUNT(*) FROM tb_user WHERE user_id = ?", 
+	      Integer.class, 
+	      email
+	    );
+	    // ③ 결과에 따라 true/false 반환
+	    return (cnt != null && cnt > 0) ? "false" : "true";
+	}
+

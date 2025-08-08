@@ -1,0 +1,18 @@
+package com.smhrd.web.mapper;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+
+import com.smhrd.web.entity.MsgMember;
+
+@Mapper
+public interface MsgMemberMapper {
+	
+	@Select("select * from tb_user where user_id=#{email}")
+	MsgMember selectByEmail(String email);
+	@Insert("insert into tb_user (email) values(#{email})")
+	void test();
+	
+	
+}
