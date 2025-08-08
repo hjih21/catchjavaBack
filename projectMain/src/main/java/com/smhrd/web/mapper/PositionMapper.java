@@ -1,0 +1,14 @@
+package com.smhrd.web.mapper;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+
+import com.smhrd.web.entity.Position;
+
+@Mapper
+public interface PositionMapper {
+	
+	@Insert("INSERT INTO tb_position (user_id, user_position1, user_position2, user_game_nick, user_special_note, available_days, available_start, available_end, created_at) VALUES (#{user_id}, #{user_position1}, #{user_position2}, #{user_game_nick}, #{user_special_note}, #{available_days}, #{available_start}, #{available_end}, NOW())")
+	int insertPosition(Position position);
+
+}
